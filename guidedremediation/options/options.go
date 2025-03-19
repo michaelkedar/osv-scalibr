@@ -28,6 +28,7 @@ type FixVulnsOptions struct {
 	Lockfile          string                       // Path to lockfile on disk.
 	Strategy          strategy.Strategy            // Remediation strategy to use.
 	MaxUpgrades       int                          // Maximum number of patches to apply. If <= 0 applies as many as possible.
+	NoIntroduce       bool                         // If true, do not apply patches that introduce vulnerabilities.
 	MatcherClient     matcher.VulnerabilityMatcher // Matcher for vulnerability information.
 	ResolveClient     resolve.Client               // Client for dependency information.
 	DefaultRepository string                       // Default registry to fetch dependency information from.

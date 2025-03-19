@@ -41,6 +41,7 @@ func TestFixOverride(t *testing.T) {
 		wantResultPath   string
 		remOpts          options.RemediationOptions
 		maxUpgrades      int
+		noIntroduce      bool
 	}{
 		{
 			name:             "basic",
@@ -67,6 +68,16 @@ func TestFixOverride(t *testing.T) {
 			remOpts:          options.DefaultRemediationOptions(),
 			maxUpgrades:      2,
 		},
+		{
+			name:        "no introduce",
+			universeDir: "testdata/maven",
+			// Using same testdata as maxUpgrades because the result happens to be the same.
+			manifest:         "testdata/maven/patchchoice/pom.xml",
+			wantManifestPath: "testdata/maven/maxupgrades/want.pom.xml",
+			wantResultPath:   "testdata/maven/maxupgrades/result.json",
+			remOpts:          options.DefaultRemediationOptions(),
+			noIntroduce:      true,
+		},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
 			client := clienttest.NewMockResolutionClient(t, filepath.Join(tt.universeDir, "universe.yaml"))
@@ -89,6 +100,7 @@ func TestFixOverride(t *testing.T) {
 				ResolveClient:      client,
 				RemediationOptions: tt.remOpts,
 				MaxUpgrades:        tt.maxUpgrades,
+				NoIntroduce:        tt.noIntroduce,
 			}
 
 			gotRes, err := guidedremediation.FixVulns(opts)
