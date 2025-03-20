@@ -63,7 +63,9 @@ func ParseFlags(args []string) (*Flags, error) {
 	mavenManagement := fs.Bool("maven-fix-management", false, "(pom.xml) If set, also remediate vulnerabilities in unused dependencyManagement dependencies.")
 	mavenRegistry := fs.String("maven-registry", "", "URL of the default Maven registry to fetch metadata")
 
-	fs.Parse(args)
+	if err := fs.Parse(args); err != nil {
+		return nil, err
+	}
 
 	flags := &Flags{
 		Manifest:                   *manifest,

@@ -79,7 +79,10 @@ func parseFlags(args []string) *cli.Flags {
 	windowsAllDrives := fs.Bool("windows-all-drives", false, "Scan all drives on Windows")
 	offline := fs.Bool("offline", false, "Offline mode: Run only plugins that don't require network access")
 
-	fs.Parse(args)
+	if err := fs.Parse(args); err != nil {
+		log.Errorf("Error parsing CLI args: %v", err)
+		os.Exit(1)
+	}
 	filesToExtract := fs.Args()
 
 	flags := &cli.Flags{
